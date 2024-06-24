@@ -2,7 +2,6 @@ from rest_framework.views import APIView
 from watchlist_app.api.serializers import MovieSerializer
 from watchlist_app.models import Movie
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
 from rest_framework import status
 
 class MovieListAV(APIView):

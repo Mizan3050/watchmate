@@ -1,9 +1,8 @@
-from django.db.migrations import serializer
 from rest_framework.views import APIView
-from watchlist_app.api.serializers import StreamPlatformSerializer, WatchListSerializer
-from watchlist_app.models import WatchList, StreamPlatform
+from watchlist_app.api.serializers import ReviewSerializer, StreamPlatformSerializer, WatchListSerializer
+from watchlist_app.models import Review, WatchList, StreamPlatform
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import generics, mixins, status
 
 class WatchListListAV(APIView):
 
@@ -45,6 +44,7 @@ class WatchListDetailAV(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class StreamPlatformListAV(APIView):
+
     def get(self, request):
         streamPlatform = StreamPlatform.objects.all()
         serializer = StreamPlatformSerializer(streamPlatform, many=True)
@@ -80,6 +80,23 @@ class StreamPlatformDetailAV(APIView):
         streamPlatform = StreamPlatform.objects.get(pk=pk)
         streamPlatform.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+class ReviewList(mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+class ReviewDetail(mixins.RetrieveModelMixin, generics.GenericAPIView):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
 
 # @api_view(['GET', 'POST'])
 # def movie_list(request):

@@ -15,11 +15,9 @@ class WatchListSerializer(serializers.ModelSerializer):
 class StreamPlatformSerializer(serializers.ModelSerializer):
 
     watchlist = WatchListSerializer(many=True, read_only=True)
-
     class Meta:
         model = StreamPlatform
         fields = "__all__"
-
 
     # def get_len_name(self, object):
     #     print(object)
